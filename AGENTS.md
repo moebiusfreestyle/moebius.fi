@@ -24,7 +24,7 @@ src/content.config.ts     frontmatter schema (title, lang, hero, subpage menu)
 src/layouts/Base.astro    <html>, header, nav (menu items), footer
 src/components/NavList.astro  the menu, any depth: desktop dropdowns, phone drawer
 src/components/SubNav.astro  secondary menu of a page and its subpages
-src/components/           Band, Button, Center, Columns, Gallery, Logos, Social, Wide
+src/components/           Band, Button, Center, Columns, Gallery, Logos, Media, Social, Wide
 src/lib/images.ts         resolves "photo.jpg" -> src/assets/photo.jpg
 src/lib/tables-plugin.mjs Markdown tables -> scrolling result tables (see Editing content)
 src/assets/               all images (optimised at build time, never hotlinked)
@@ -129,7 +129,9 @@ subpage `skitour-YYYY/<venue>-<d>-<m>.mdx` (e.g. `talma-17-1.mdx`) with
 event page holds `# Tulokset …` and the venue's `<Logos>` row; the original
 `# Kilpailukutsu …` text and the logos go in its own subpage
 `skitour-YYYY/<venue>-<d>-<m>/kilpailukutsu.mdx` (`navLabel: "Kilpailukutsu"`),
-so the event shows a "Tulokset | Kilpailukutsu" pair of tabs. An event with
+so the event shows a "Tulokset | Kilpailukutsu" pair of tabs. Videos and
+posts about the event (the club's YouTube channel and @moebiusfreestyle on
+Instagram) go in a `<Media>` row right under the `# Tulokset …` heading. An event with
 no results (cancelled, or results never published) keeps its invitation on
 the event page. The season page's tab is `navLabel: "Kokonaistulokset YYYY"`.
 When the coming season ends and `skitour.mdx` becomes `skitour-YYYY.mdx`,
@@ -201,6 +203,10 @@ not open them.
   the desktop bar, so resizing across the breakpoint does not animate it
   (do not merge the two). Browsers without popover support fall
   back to a plain two-column list of the top level.
+- `Media` links to YouTube and Instagram instead of embedding them, so pages
+  load nothing from those sites; keep it that way (no `<iframe>` players,
+  no Instagram `embed.js`). Instagram lists an account's posts only to
+  logged-in users, so post links have to come from the maintainer.
 - Do not add JavaScript to pages. The site ships none and should stay that
   way unless a feature truly needs it.
 - Preserve the original wording of the content; this is the club's own text.

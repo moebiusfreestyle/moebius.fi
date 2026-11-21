@@ -7,6 +7,7 @@ import Center from '../components/Center.astro';
 import Columns from '../components/Columns.astro';
 import Gallery from '../components/Gallery.astro';
 import Logos from '../components/Logos.astro';
+import Media from '../components/Media.astro';
 import Social from '../components/Social.astro';
 import SubNav from '../components/SubNav.astro';
 import Wide from '../components/Wide.astro';
@@ -55,6 +56,6 @@ const sectionTitle = root.data.section ?? root.data.title;
 
 <Base {...page.data} slug={slug}>
   {rows.length > 0 && <SubNav title={sectionTitle} rows={rows} slug={slug} variant="tabs" />}
-  <Content components={{ Band, Button, Center, Columns, Gallery, Logos, Social, Wide }} />
+  <Content components={{ Band, Button, Center, Columns, Gallery, Logos, Media, Social, Wide }} />
   {rows.length > 0 && <SubNav title={sectionTitle} rows={rows} slug={slug} variant="pager" />}
 </Base>
