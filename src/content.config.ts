@@ -16,9 +16,14 @@ const pages = defineCollection({
       // Subpages: a page in a folder named after a page (skitour-2026/talma-17-1.mdx
       // next to skitour-2026.mdx) is its subpage. The parent and its subpages
       // share a secondary menu: the parent first, then the subpages by date.
-      // navLabel is the page's label in that menu (defaults to the title),
-      // section the menu's heading, set on the parent (defaults to its title).
+      // Subpages can have subpages of their own, shown as a second row of tabs.
+      // navLabel is the page's label in that menu (defaults to the last part
+      // of the title), section the menu's heading, set on the parent (defaults
+      // to its title), and contentLabel the label of a parent's own tab in its
+      // subpages' row when it differs from navLabel (an event page is
+      // "Talma 17.1." among the events but "Tulokset" next to its invitation).
       navLabel: z.string().optional(),
+      contentLabel: z.string().optional(),
       section: z.string().optional(),
       date: z.coerce.date().optional(),
       // Optional full-width photo band with a heading at the top of the page.

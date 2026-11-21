@@ -104,10 +104,14 @@ at render time as an inline `text-align` style.
 - Subpages: `foo/bar.mdx` next to `foo.mdx` is served at `/foo/bar/`. The
   parent and its subpages get a secondary menu (`SubNav.astro`): tabs above
   the content listing the parent and then the subpages by `date`, and
-  previous/next links below it. Frontmatter: `navLabel` is the page's tab
-  label, `section` (on the parent) the menu's heading, `date` orders the
-  subpages. The main menu marks the parent's item as current on its subpages.
-  Inline images in a subpage need one more `../` (`../../../assets/a.jpg`).
+  previous/next links below it. A subpage can have subpages of its own
+  (`foo/bar/baz.mdx`); they add a second row of tabs, drawn as one joined
+  control. Frontmatter: `navLabel` is the page's tab label (default: the
+  title after its last ` | `), `section` (on the top page) the menu's
+  heading, `contentLabel` a page's own tab in its subpages' row when it
+  differs from `navLabel`, and `date` orders the subpages. The main menu
+  marks the parent's item as current on its subpages. Inline images in a
+  subpage need one more `../` per folder level (`../../../assets/a.jpg`).
 
 ### SkiTour result pages
 
@@ -121,8 +125,13 @@ The front page (`index.mdx`) repeats the coming season's event list in its
 A past season is split into subpages: `skitour-YYYY.mdx` holds the poster
 and the season standings (`# YYYY Kokonaistulokset`), and each event is a
 subpage `skitour-YYYY/<venue>-<d>-<m>.mdx` (e.g. `talma-17-1.mdx`) with
-`navLabel: "Talma 17.1."` and `date`. An event page holds `# Tulokset …`,
-then the original `# Kilpailukutsu …` text, then the venue's `<Logos>` row.
+`navLabel: "Talma 17.1."`, `contentLabel: "Tulokset"` and `date`. The
+event page holds `# Tulokset …` and the venue's `<Logos>` row; the original
+`# Kilpailukutsu …` text and the logos go in its own subpage
+`skitour-YYYY/<venue>-<d>-<m>/kilpailukutsu.mdx` (`navLabel: "Kilpailukutsu"`),
+so the event shows a "Tulokset | Kilpailukutsu" pair of tabs. An event with
+no results (cancelled, or results never published) keeps its invitation on
+the event page. The season page's tab is `navLabel: "Kokonaistulokset YYYY"`.
 When the coming season ends and `skitour.mdx` becomes `skitour-YYYY.mdx`,
 move its events into subpages the same way.
 

@@ -84,9 +84,15 @@ main > *:not(.band):not(.gallery):not(.columns):not(.wide):not(.lightbox) { max-
 .subnav-title { margin:0 0 10px; font:700 13px "Montserrat",system-ui,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
 .subnav-title a { color:var(--blue); text-decoration:none; }
 .subnav ul { display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0; list-style:none; }
-.subnav li a { display:block; padding:5px 11px; border:2px solid var(--navy); border-radius:3px; color:var(--navy); font-weight:700; text-decoration:none; }
+.subnav li a { display:block; padding:5px 10px; font-size:14px; border:2px solid var(--navy); border-radius:3px; color:var(--navy); font-weight:700; text-decoration:none; }
 .subnav li a:hover { background:var(--pale); }
 .subnav li a[aria-current] { background:var(--navy); color:#fff; }
+/* Second row (an event's Tulokset | Kilpailukutsu): the tabs side by side as one joined control. */
+.subnav .subnav-sub { gap:0; margin-top:10px; }
+.subnav-sub li + li { margin-left:-2px; }
+.subnav-sub li a { border-radius:0; }
+.subnav-sub li:first-child a { border-radius:3px 0 0 3px; }
+.subnav-sub li:last-child a { border-radius:0 3px 3px 0; }
 .pager { display:flex; justify-content:space-between; gap:16px; margin-top:56px; }
 .pager a { padding-top:16px; border-top:3px solid var(--gold); color:var(--navy); font-weight:700; font-size:18px; text-decoration:none; }
 .pager a:hover { color:var(--blue); }

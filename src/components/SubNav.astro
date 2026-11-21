@@ -1,9 +1,12 @@
 ---
-// Secondary menu for a page and its subpages (see `section` and `navLabel`
-// in content.config.ts). variant="tabs" goes above the content and lists
-// every page of the section; variant="pager" goes below it and links the
-// previous and next page, so a long results page need not be scrolled back
-// up to move on.
+// Secondary menu for a page and its subpages (see `section`, `navLabel` and
+// `contentLabel` in content.config.ts). Each row lists a page and its direct
+// subpages; the first row is the section (a season and its events), a second
+// row appears on a subpage that has subpages of its own (an event's results
+// and invitation).
+// variant="tabs" goes above the content and shows every row. variant="pager"
+// goes below it and links the previous and next item of the first row, so a
+// long results page need not be scrolled back up to move on.
 export interface SubNavItem {
   label: string;
   path: string;
@@ -11,26 +14,40 @@ export interface SubNavItem {
 
 interface Props {
   title: string;
-  items: SubNavItem[];
+  rows: SubNavItem[][];
   slug: string;
   variant: 'tabs' | 'pager';
 }
 
-const { title, items, slug, variant } = Astro.props;
+const { title, rows, slug, variant } = Astro.props;
 const href = (path: string) => `/${path}/`;
-const at = items.findIndex((item) => item.path === slug);
-const prev = items[at - 1];
-const next = items[at + 1];
+// The item of a row the current page is in: the page itself or the deepest
+// item whose path contains it (a row's first item contains all the others).
+const activeIndex = (row: SubNavItem[]) => {
+  let at = -1;
+  row.forEach((item, i) => {
+    if ((slug === item.path || slug.startsWith(`${item.path}/`)) && (at < 0 || item.path.length > row[at].path.length)) at = i;
+  });
+  return at;
+};
+const current = (row: SubNavItem[], i: number) =>
+  i !== activeIndex(row) ? undefined : row[i].path === slug ? 'page' : 'true';
+const top = rows[0];
+const at = activeIndex(top);
+const prev = at > 0 ? top[at - 1] : undefined;
+const next = at >= 0 ? top[at + 1] : undefined;
 ---
 
 {variant === 'tabs' && (
   <nav class="subnav" aria-label={title}>
-    <p class="subnav-title"><a href={href(items[0].path)}>{title}</a></p>
-    <ul>
-      {items.map((item) => (
-        <li><a href={href(item.path)} aria-current={item.path === slug ? 'page' : undefined}>{item.label}</a></li>
-      ))}
-    </ul>
+    <p class="subnav-title"><a href={href(top[0].path)}>{title}</a></p>
+    {rows.map((row, r) => (
+      <ul class={r > 0 ? 'subnav-sub' : undefined}>
+        {row.map((item, i) => (
+          <li><a href={href(item.path)} aria-current={current(row, i)}>{item.label}</a></li>
+        ))}
+      </ul>
+    ))}
   </nav>
 )}
 {variant === 'pager' && (prev || next) && (

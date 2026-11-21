@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntry, render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Band from '../components/Band.astro';
 import Button from '../components/Button.astro';
@@ -23,24 +23,38 @@ const { page } = Astro.props;
 const slug = page.id === 'index' ? '' : page.id;
 const { Content } = await render(page);
 
-// Secondary menu: a page in a folder (skitour-2026/talma-17-1) belongs to the
-// page named after the folder (skitour-2026); the two share a menu listing
-// the parent first and then its subpages by date.
-const parentId = page.id.split('/')[0];
-const parent = await getEntry('pages', parentId);
-const subpages = (await getCollection('pages', (p) => p.id.startsWith(`${parentId}/`)))
-  .sort((a, b) => (a.data.date?.getTime() ?? 0) - (b.data.date?.getTime() ?? 0) || a.id.localeCompare(b.id));
-const section = parent && subpages.length
-  // Without a navLabel, the tab shows the last part of the title
-  // ("Moe SkiTour | Talma 17.1.2026" -> "Talma 17.1.2026"), so the shared
-  // site/section prefix is not repeated on every tab.
-  ? [parent, ...subpages].map((p) => ({ label: p.data.navLabel ?? p.data.title.split(' | ').at(-1)!, path: p.id }))
-  : [];
-const sectionTitle = parent?.data.section ?? parent?.data.title ?? '';
+// Secondary menu: a page in a folder (skitour-2026/talma-17-1) is a subpage
+// of the page named after the folder (skitour-2026). A page with subpages
+// gets a row of tabs: itself first, then its direct subpages by date. Each
+// level of the current page's path that has subpages adds a row, so an event
+// page shows the season's events and then its own "Tulokset | Kilpailukutsu".
+const pages = await getCollection('pages');
+type Page = (typeof pages)[number];
+// Without a navLabel, a tab shows the last part of the title
+// ("Moe SkiTour | Talma 17.1.2026" -> "Talma 17.1.2026"), so the shared
+// site/section prefix is not repeated on every tab.
+const label = (p: Page) => p.data.navLabel ?? p.data.title.split(' | ').at(-1)!;
+const byDate = (a: Page, b: Page) =>
+  (a.data.date?.getTime() ?? 0) - (b.data.date?.getTime() ?? 0) || a.id.localeCompare(b.id);
+const segments = page.id.split('/');
+const rows = segments
+  .map((_, i) => pages.find((p) => p.id === segments.slice(0, i + 1).join('/')))
+  .filter((parent) => parent !== undefined)
+  .map((parent) => {
+    const children = pages
+      .filter((p) => p.id.startsWith(`${parent.id}/`) && !p.id.slice(parent.id.length + 1).includes('/'))
+      .sort(byDate);
+    return children.length
+      ? [{ label: parent.data.contentLabel ?? label(parent), path: parent.id }, ...children.map((p) => ({ label: label(p), path: p.id }))]
+      : [];
+  })
+  .filter((row) => row.length);
+const root = pages.find((p) => p.id === segments[0])!;
+const sectionTitle = root.data.section ?? root.data.title;
 ---
 
 <Base {...page.data} slug={slug}>
-  {section.length > 0 && <SubNav title={sectionTitle} items={section} slug={slug} variant="tabs" />}
+  {rows.length > 0 && <SubNav title={sectionTitle} rows={rows} slug={slug} variant="tabs" />}
   <Content components={{ Band, Button, Center, Columns, Gallery, Logos, Social, Wide }} />
-  {section.length > 0 && <SubNav title={sectionTitle} items={section} slug={slug} variant="pager" />}
+  {rows.length > 0 && <SubNav title={sectionTitle} rows={rows} slug={slug} variant="pager" />}
 </Base>
