@@ -10,6 +10,19 @@
     // Serve dist/404.html with status 404 for unknown URLs (default: empty body).
     "not_found_handling": "404-page"
   },
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": true
+    },
+    "traces": {
+      "enabled": false,
+      "head_sampling_rate": 1,
+      "persist": true
+    }
+  },
   // Required (even empty) for `npx wrangler preview`, which Workers Builds
   // runs for every branch other than main. Assets and compatibility settings
   // stay at the top level and apply to previews as well.
