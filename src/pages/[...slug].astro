@@ -31,7 +31,10 @@ const parent = await getEntry('pages', parentId);
 const subpages = (await getCollection('pages', (p) => p.id.startsWith(`${parentId}/`)))
   .sort((a, b) => (a.data.date?.getTime() ?? 0) - (b.data.date?.getTime() ?? 0) || a.id.localeCompare(b.id));
 const section = parent && subpages.length
-  ? [parent, ...subpages].map((p) => ({ label: p.data.navLabel ?? p.data.title, path: p.id }))
+  // Without a navLabel, the tab shows the last part of the title
+  // ("Moe SkiTour | Talma 17.1.2026" -> "Talma 17.1.2026"), so the shared
+  // site/section prefix is not repeated on every tab.
+  ? [parent, ...subpages].map((p) => ({ label: p.data.navLabel ?? p.data.title.split(' | ').at(-1)!, path: p.id }))
   : [];
 const sectionTitle = parent?.data.section ?? parent?.data.title ?? '';
 ---
