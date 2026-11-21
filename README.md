@@ -21,7 +21,7 @@ The site is hosted on [Cloudflare Workers](https://developers.cloudflare.com/wor
 as static assets, and Cloudflare's Workers Builds is connected to this GitHub
 repository. Every push to `main` is built by Cloudflare and published to
 production; every other branch gets a preview at
-`<branch>-moebius-fi.hvrauhal.workers.dev`, and pull requests get the preview
+`<branch>-moebius-fi.webadmin-12e.workers.dev`, and pull requests get the preview
 URL as a comment. Nothing needs to be built or uploaded by hand.
 
 Cloudflare builds outside Docker, with the Node version from `.node-version`
