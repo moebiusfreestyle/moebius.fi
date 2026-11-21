@@ -1,0 +1,41 @@
+---
+// Secondary menu for a page and its subpages (see `section` and `navLabel`
+// in content.config.ts). variant="tabs" goes above the content and lists
+// every page of the section; variant="pager" goes below it and links the
+// previous and next page, so a long results page need not be scrolled back
+// up to move on.
+export interface SubNavItem {
+  label: string;
+  path: string;
+}
+
+interface Props {
+  title: string;
+  items: SubNavItem[];
+  slug: string;
+  variant: 'tabs' | 'pager';
+}
+
+const { title, items, slug, variant } = Astro.props;
+const href = (path: string) => `/${path}/`;
+const at = items.findIndex((item) => item.path === slug);
+const prev = items[at - 1];
+const next = items[at + 1];
+---
+
+{variant === 'tabs' && (
+  <nav class="subnav" aria-label={title}>
+    <p class="subnav-title"><a href={href(items[0].path)}>{title}</a></p>
+    <ul>
+      {items.map((item) => (
+        <li><a href={href(item.path)} aria-current={item.path === slug ? 'page' : undefined}>{item.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+)}
+{variant === 'pager' && (prev || next) && (
+  <nav class="pager" aria-label={`${title}: edellinen ja seuraava`}>
+    {prev && <a class="pager-prev" href={href(prev.path)} rel="prev"><small>‹ Edellinen</small>{prev.label}</a>}
+    {next && <a class="pager-next" href={href(next.path)} rel="next"><small>Seuraava ›</small>{next.label}</a>}
+  </nav>
+)}

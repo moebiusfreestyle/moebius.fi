@@ -29,8 +29,10 @@ interface Props {
 const { items, slug, variant, navId = '', labels, depth = 1 } = Astro.props;
 
 const href = (path: string) => (path ? `/${path}/` : '/');
+// The current page is in an item's path if it is the item, one of its
+// children, or a subpage of either (skitour-2026/talma-17-1 is under skitour-2026).
 const contains = (item: NavItem): boolean =>
-  item.path === slug || (item.children ?? []).some(contains);
+  item.path === slug || (!!item.path && slug.startsWith(`${item.path}/`)) || (item.children ?? []).some(contains);
 ---
 
 <ul class={`nav-list nav-level-${depth}`}>

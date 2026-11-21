@@ -13,6 +13,14 @@ const pages = defineCollection({
       // Optional picture shown when the page is shared (og:image); defaults to
       // the hero image, else a club photo.
       image: image().optional(),
+      // Subpages: a page in a folder named after a page (skitour-2026/talma-17-1.mdx
+      // next to skitour-2026.mdx) is its subpage. The parent and its subpages
+      // share a secondary menu: the parent first, then the subpages by date.
+      // navLabel is the page's label in that menu (defaults to the title),
+      // section the menu's heading, set on the parent (defaults to its title).
+      navLabel: z.string().optional(),
+      section: z.string().optional(),
+      date: z.coerce.date().optional(),
       // Optional full-width photo band with a heading at the top of the page.
       hero: z
         .object({

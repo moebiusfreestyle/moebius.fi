@@ -78,6 +78,21 @@ main > *:not(.band):not(.gallery):not(.columns):not(.wide):not(.lightbox) { max-
 .center { text-align:center; }
 .center h2 { font-size:40px; margin:64px 0 24px; }
 
+/* Secondary menu of a page with subpages (SubNav.astro): tabs above the
+   content, previous/next links below it. */
+.subnav { margin-top:40px; }
+.subnav-title { margin:0 0 10px; font:700 13px "Montserrat",system-ui,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+.subnav-title a { color:var(--blue); text-decoration:none; }
+.subnav ul { display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0; list-style:none; }
+.subnav li a { display:block; padding:5px 11px; border:2px solid var(--navy); border-radius:3px; color:var(--navy); font-weight:700; text-decoration:none; }
+.subnav li a:hover { background:var(--pale); }
+.subnav li a[aria-current] { background:var(--navy); color:#fff; }
+.pager { display:flex; justify-content:space-between; gap:16px; margin-top:56px; }
+.pager a { padding-top:16px; border-top:3px solid var(--gold); color:var(--navy); font-weight:700; font-size:18px; text-decoration:none; }
+.pager a:hover { color:var(--blue); }
+.pager small { display:block; color:var(--text); font-weight:400; font-size:14px; }
+.pager-next { margin-left:auto; text-align:right; }
+
 /* Photo bands */
 .band { background:#3b7fb8 center/cover; color:#fff; padding:40px 20px; text-align:center; margin:56px 0 0; }
 .band:first-child { margin-top:0; width:100%; min-height:240px; display:flex; flex-direction:column; justify-content:center; align-items:center; }

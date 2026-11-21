@@ -84,6 +84,20 @@ sideways, so put wide ones in `<Wide>`. The SkiTour pages show the pattern:
 one `# Tulokset …` heading per event, a `##` heading per class, columns in
 the order of the result sheet, decimals with a comma.
 
+A page can have subpages: `src/content/pages/skitour-2026/talma-17-1.mdx` is
+served at `/skitour-2026/talma-17-1/` and is a subpage of `skitour-2026.mdx`.
+The page and its subpages share a secondary menu of tabs (with previous/next
+links at the bottom). Set the tab label with `navLabel`, the menu heading with
+`section` on the parent page, and the order of the subpages with `date`:
+
+```yaml
+---
+title: "Moe SkiTour | Talma 17.1.2026"
+navLabel: "Talma 17.1."
+date: 2026-01-17
+---
+```
+
 Images referenced by file name live in `src/assets/`. Drop new photos there and
 refer to them by name; Astro resizes and converts them at build time. Inline
 images in Markdown use a relative path: `![](../../assets/photo.jpg)`.

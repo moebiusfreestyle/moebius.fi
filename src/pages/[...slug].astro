@@ -1,5 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Band from '../components/Band.astro';
 import Button from '../components/Button.astro';
@@ -8,6 +8,7 @@ import Columns from '../components/Columns.astro';
 import Gallery from '../components/Gallery.astro';
 import Logos from '../components/Logos.astro';
 import Social from '../components/Social.astro';
+import SubNav from '../components/SubNav.astro';
 import Wide from '../components/Wide.astro';
 
 export async function getStaticPaths() {
@@ -21,8 +22,22 @@ export async function getStaticPaths() {
 const { page } = Astro.props;
 const slug = page.id === 'index' ? '' : page.id;
 const { Content } = await render(page);
+
+// Secondary menu: a page in a folder (skitour-2026/talma-17-1) belongs to the
+// page named after the folder (skitour-2026); the two share a menu listing
+// the parent first and then its subpages by date.
+const parentId = page.id.split('/')[0];
+const parent = await getEntry('pages', parentId);
+const subpages = (await getCollection('pages', (p) => p.id.startsWith(`${parentId}/`)))
+  .sort((a, b) => (a.data.date?.getTime() ?? 0) - (b.data.date?.getTime() ?? 0) || a.id.localeCompare(b.id));
+const section = parent && subpages.length
+  ? [parent, ...subpages].map((p) => ({ label: p.data.navLabel ?? p.data.title, path: p.id }))
+  : [];
+const sectionTitle = parent?.data.section ?? parent?.data.title ?? '';
 ---
 
 <Base {...page.data} slug={slug}>
+  {section.length > 0 && <SubNav title={sectionTitle} items={section} slug={slug} variant="tabs" />}
   <Content components={{ Band, Button, Center, Columns, Gallery, Logos, Social, Wide }} />
+  {section.length > 0 && <SubNav title={sectionTitle} items={section} slug={slug} variant="pager" />}
 </Base>
