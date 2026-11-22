@@ -76,6 +76,7 @@ without imports:
 | `<Wide>…</Wide>` | Full content width for the wrapped Markdown; use it for wide result tables. Images inside are shown whole and fitted to the width |
 | `<Button href="/jasenyys/">Liity jäseneksi</Button>` | Gold button |
 | `<Social />` | Facebook / Instagram / YouTube icons |
+| `<Media links={["https://www.youtube.com/watch?v=…"]} />` | Thumbnail cards linking to YouTube videos or Instagram posts (nothing is embedded). Each needs a local thumbnail, see below |
 
 Result tables are ordinary Markdown tables. Head the first column `Sija` or
 `Rank` and the rows placed 1–3 are highlighted; right-align number columns
@@ -83,6 +84,34 @@ with `---:` in the separator line. A table wider than the column scrolls
 sideways, so put wide ones in `<Wide>`. The SkiTour pages show the pattern:
 one `# Tulokset …` heading per event, a `##` heading per class, columns in
 the order of the result sheet, decimals with a comma.
+
+A page can have subpages: `src/content/pages/skitour-2026/talma-17-1.mdx` is
+served at `/skitour-2026/talma-17-1/` and is a subpage of `skitour-2026.mdx`.
+The page and its subpages share a secondary menu of tabs (with previous/next
+links at the bottom). Set the tab label with `navLabel`, the menu heading with
+`section` on the parent page, and the order of the subpages with `date`:
+
+```yaml
+---
+title: "Moe SkiTour | Talma 17.1.2026"
+navLabel: "Talma 17.1."
+date: 2026-01-17
+---
+```
+
+`<Media>` needs a thumbnail for each link in `src/assets/`, named
+`youtube-<video id>.jpg` or `instagram-<post code>.jpg` (the build stops with
+an error if one is missing). For a YouTube video, save
+`https://i.ytimg.com/vi/<video id>/maxresdefault.jpg`; for an Instagram post,
+save the picture from the post page's `og:image` tag:
+
+```sh
+id=i4t2sLi3XOU
+curl -o src/assets/youtube-$id.jpg https://i.ytimg.com/vi/$id/maxresdefault.jpg
+code=C2mGVeQoU8-
+curl -s https://www.instagram.com/p/$code/ | grep -o '<meta property="og:image" content="[^"]*"' \
+  | sed 's/.*content="//;s/"$//;s/&amp;/\&/g' | xargs curl -o src/assets/instagram-$code.jpg
+```
 
 Images referenced by file name live in `src/assets/`. Drop new photos there and
 refer to them by name; Astro resizes and converts them at build time. Inline

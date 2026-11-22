@@ -78,6 +78,27 @@ main > *:not(.band):not(.gallery):not(.columns):not(.wide):not(.lightbox) { max-
 .center { text-align:center; }
 .center h2 { font-size:40px; margin:64px 0 24px; }
 
+/* Secondary menu of a page with subpages (SubNav.astro): tabs above the
+   content, previous/next links below it. */
+.subnav { margin-top:40px; }
+.subnav-title { margin:0 0 10px; font:700 13px "Montserrat",system-ui,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+.subnav-title a { color:var(--blue); text-decoration:none; }
+.subnav ul { display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0; list-style:none; }
+.subnav li a { display:block; padding:5px 10px; font-size:14px; border:2px solid var(--navy); border-radius:3px; color:var(--navy); font-weight:700; text-decoration:none; }
+.subnav li a:hover { background:var(--pale); }
+.subnav li a[aria-current] { background:var(--navy); color:#fff; }
+/* Second row (an event's Tulokset | Kilpailukutsu): the tabs side by side as one joined control. */
+.subnav .subnav-sub { gap:0; margin-top:10px; }
+.subnav-sub li + li { margin-left:-2px; }
+.subnav-sub li a { border-radius:0; }
+.subnav-sub li:first-child a { border-radius:3px 0 0 3px; }
+.subnav-sub li:last-child a { border-radius:0 3px 3px 0; }
+.pager { display:flex; justify-content:space-between; gap:16px; margin-top:56px; }
+.pager a { padding-top:16px; border-top:3px solid var(--gold); color:var(--navy); font-weight:700; font-size:18px; text-decoration:none; }
+.pager a:hover { color:var(--blue); }
+.pager small { display:block; color:var(--text); font-weight:400; font-size:14px; }
+.pager-next { margin-left:auto; text-align:right; }
+
 /* Photo bands */
 .band { background:#3b7fb8 center/cover; color:#fff; padding:40px 20px; text-align:center; margin:56px 0 0; }
 .band:first-child { margin-top:0; width:100%; min-height:240px; display:flex; flex-direction:column; justify-content:center; align-items:center; }
@@ -109,6 +130,19 @@ main > img, main > p > img { display:block; margin:24px auto; }
 .lightbox-prev:hover, .lightbox-next:hover { background:#000c; }
 .lightbox-prev { left:12px; }
 .lightbox-next { right:12px; }
+.media { display:grid; grid-template-columns:repeat(var(--cols,1),1fr); gap:20px; margin:24px 0 32px; }
+.media-card { position:relative; display:block; color:var(--navy); font-weight:700; text-decoration:none; }
+.media-card img { display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; border-radius:3px; }
+.media-play { position:absolute; left:50%; top:calc(50% - 16px); width:68px; height:48px; transform:translate(-50%,-50%); border-radius:12px; background:#000a; }
+.media-play::after { content:""; position:absolute; left:27px; top:14px; border:10px solid transparent; border-left:16px solid #fff; border-right:0; }
+.media-youtube:hover .media-play { background:#f00; }
+.media-instagram img { object-fit:contain; background:var(--navy); }
+.media-instagram .media-play { border-radius:50%; width:56px; height:56px; }
+.media-instagram .media-play::after { left:21px; top:18px; }
+.media-instagram:hover .media-play { background:#c13584; }
+.media-label { display:block; padding-top:8px; }
+.media-card:hover .media-label { color:var(--blue); }
+@media (max-width:700px) { .media { grid-template-columns:1fr; } }
 .partners { display:flex; justify-content:center; align-items:center; gap:24px; margin:40px auto; flex-wrap:wrap; }
 .partners img { height:72px; width:auto; max-width:100%; object-fit:contain; }
 .partners a { display:block; line-height:0; }

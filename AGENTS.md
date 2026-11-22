@@ -19,10 +19,12 @@ deployment). This file covers how to work on the repo safely.
 
 ```
 src/content/pages/*.mdx   one file per page; file name = URL slug
-src/content.config.ts     frontmatter schema (title, lang, hero)
+src/content/pages/<page>/*.mdx  subpages of <page>.mdx (secondary menu)
+src/content.config.ts     frontmatter schema (title, lang, hero, subpage menu)
 src/layouts/Base.astro    <html>, header, nav (menu items), footer
 src/components/NavList.astro  the menu, any depth: desktop dropdowns, phone drawer
-src/components/           Band, Button, Center, Columns, Gallery, Logos, Social, Wide
+src/components/SubNav.astro  secondary menu of a page and its subpages
+src/components/           Band, Button, Center, Columns, Gallery, Logos, Media, Social, Wide
 src/lib/images.ts         resolves "photo.jpg" -> src/assets/photo.jpg
 src/lib/tables-plugin.mjs Markdown tables -> scrolling result tables (see Editing content)
 src/assets/               all images (optimised at build time, never hotlinked)
@@ -99,6 +101,17 @@ at render time as an inline `text-align` style.
 - Hard line breaks are a trailing backslash.
 - The URL of a page is its file name; renaming a file changes the URL, so add
   a redirect to `public/_redirects` if you do.
+- Subpages: `foo/bar.mdx` next to `foo.mdx` is served at `/foo/bar/`. The
+  parent and its subpages get a secondary menu (`SubNav.astro`): tabs above
+  the content listing the parent and then the subpages by `date`, and
+  previous/next links below it. A subpage can have subpages of its own
+  (`foo/bar/baz.mdx`); they add a second row of tabs, drawn as one joined
+  control. Frontmatter: `navLabel` is the page's tab label (default: the
+  title after its last ` | `), `section` (on the top page) the menu's
+  heading, `contentLabel` a page's own tab in its subpages' row when it
+  differs from `navLabel`, and `date` orders the subpages. The main menu
+  marks the parent's item as current on its subpages. Inline images in a
+  subpage need one more `../` per folder level (`../../../assets/a.jpg`).
 
 ### SkiTour result pages
 
@@ -109,9 +122,20 @@ first; both update automatically. Past season pages open with the poster,
 so they do not repeat the `moebius91.png` SkiTour banner.
 The front page (`index.mdx`) repeats the coming season's event list in its
 "Moe SkiTour" column; when a new season is announced, update both files.
-A season page starts with the season standings (`# YYYY Kokonaistulokset`),
-then for each event, newest first, `# Tulokset …` followed by the original
-`# Kilpailukutsu …` text and the venue's `<Logos>` row.
+A past season is split into subpages: `skitour-YYYY.mdx` holds the poster
+and the season standings (`# YYYY Kokonaistulokset`), and each event is a
+subpage `skitour-YYYY/<venue>-<d>-<m>.mdx` (e.g. `talma-17-1.mdx`) with
+`navLabel: "Talma 17.1."`, `contentLabel: "Tulokset"` and `date`. The
+event page holds `# Tulokset …` and the venue's `<Logos>` row; the original
+`# Kilpailukutsu …` text and the logos go in its own subpage
+`skitour-YYYY/<venue>-<d>-<m>/kilpailukutsu.mdx` (`navLabel: "Kilpailukutsu"`),
+so the event shows a "Tulokset | Kilpailukutsu" pair of tabs. Videos and
+posts about the event (the club's YouTube channel and @moebiusfreestyle on
+Instagram) go in a `<Media>` row right under the `# Tulokset …` heading. An event with
+no results (cancelled, or results never published) keeps its invitation on
+the event page. The season page's tab is `navLabel: "Kokonaistulokset YYYY"`.
+When the coming season ends and `skitour.mdx` becomes `skitour-YYYY.mdx`,
+move its events into subpages the same way.
 
 - Within an event, classes are `##` headings (`Kids`, `Groms tytöt`,
   `Groms pojat`, `Rookies`, `Open`/`Pros`); girls and boys get separate
@@ -179,6 +203,10 @@ not open them.
   the desktop bar, so resizing across the breakpoint does not animate it
   (do not merge the two). Browsers without popover support fall
   back to a plain two-column list of the top level.
+- `Media` links to YouTube and Instagram instead of embedding them, so pages
+  load nothing from those sites; keep it that way (no `<iframe>` players,
+  no Instagram `embed.js`). Instagram lists an account's posts only to
+  logged-in users, so post links have to come from the maintainer.
 - Do not add JavaScript to pages. The site ships none and should stay that
   way unless a feature truly needs it.
 - Preserve the original wording of the content; this is the club's own text.

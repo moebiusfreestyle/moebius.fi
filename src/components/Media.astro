@@ -1,0 +1,39 @@
+---
+// Links to videos and posts on YouTube and Instagram, shown as thumbnail
+// cards. Usage:
+//   <Media links={["https://www.youtube.com/watch?v=i4t2sLi3XOU",
+//                  "https://www.instagram.com/p/C2mGVeQoU8-/"]} />
+// Nothing is embedded: the page loads no player or script from YouTube or
+// Instagram, and a click opens the video or post there. The thumbnail is a
+// local copy in src/assets/ named after the link: youtube-<video id>.jpg or
+// instagram-<post code>.jpg (see the README for how to fetch one).
+import { Image } from 'astro:assets';
+import { resolveImage } from '../lib/images';
+
+interface Props {
+  links: string[];
+}
+
+const PLATFORMS = [
+  { name: 'youtube', label: 'Katso YouTubessa', pattern: /(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([\w-]{11})/ },
+  { name: 'instagram', label: 'Katso Instagramissa', pattern: /instagram\.com\/(?:[\w.]+\/)?(?:p|reel)\/([\w-]+)/ },
+];
+
+const cards = Astro.props.links.map((url) => {
+  for (const platform of PLATFORMS) {
+    const id = url.match(platform.pattern)?.[1];
+    if (id) return { url, platform, img: resolveImage(`${platform.name}-${id}.jpg`) };
+  }
+  throw new Error(`Media: not a YouTube or Instagram link: ${url}`);
+});
+---
+
+<div class="media" style={`--cols:${Math.min(cards.length, 2)}`}>
+  {cards.map(({ url, platform, img }) => (
+    <a class={`media-card media-${platform.name}`} href={url}>
+      <Image src={img} alt="" width={720} />
+      <span class="media-play" aria-hidden="true"></span>
+      <span class="media-label">{platform.label}</span>
+    </a>
+  ))}
+</div>
