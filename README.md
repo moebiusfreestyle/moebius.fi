@@ -55,6 +55,7 @@ lang: fi
 hero:
   image: ../../assets/harraste.jpg
   heading: "Harraste"
+  logo: ../../assets/logo.png # optional: shown instead of the heading text
   headingAt: 70              # optional: middle of the heading at 70% of the photo's height
   focusX: 25                 # optional: on phones, keep the photo's left quarter in view
   cta:                       # optional button

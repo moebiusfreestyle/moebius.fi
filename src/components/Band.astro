@@ -1,12 +1,14 @@
 ---
 // Full-width photo band with a centred heading and an optional button.
 import type { ImageMetadata } from 'astro';
-import { getImage } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { resolveImage } from '../lib/images';
 
 interface Props {
   image: string | ImageMetadata;
   heading: string;
+  // A logo shown in place of the heading text, which becomes its alt text.
+  logo?: ImageMetadata;
   cta?: { label: string; href: string };
   level?: 1 | 2;
   // Middle of the heading, as % of the band's height from the top.
@@ -18,7 +20,7 @@ interface Props {
   tint?: boolean;
 }
 
-const { image, heading, cta, level = 2, headingAt, focusX, tint = true } = Astro.props;
+const { image, heading, logo, cta, level = 2, headingAt, focusX, tint = true } = Astro.props;
 const meta = resolveImage(image);
 // Photos are served 1600 px wide, unless a sharper, larger-than-1920 px
 // source was provided on purpose (the front page): that is kept up to 3840 px.
@@ -35,6 +37,8 @@ const focus = focusX === undefined ? '' : `;background-position:${focusX}% cente
 ---
 
 <section class:list={['band', { 'band-placed': placed, 'band-tint': level === 1 && tint }]} style={`background-image:url(${bg.src})${ratio}${placed}${focus}`}>
-  <Heading>{heading}</Heading>
+  <Heading class:list={{ 'band-logo': logo }}>
+    {logo ? <Image src={logo} alt={heading} width={Math.min(logo.width, 1280)} loading="eager" /> : heading}
+  </Heading>
   {cta && <p><a href={cta.href}>{cta.label}</a></p>}
 </section>

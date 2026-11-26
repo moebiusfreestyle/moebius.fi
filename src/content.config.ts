@@ -31,6 +31,8 @@ const pages = defineCollection({
         .object({
           image: image(),
           heading: z.string(),
+          // A logo shown in place of the heading text, which becomes its alt text.
+          logo: image().optional(),
           cta: z.object({ label: z.string(), href: z.string() }).optional(),
           // Where the middle of the heading sits, as a percentage of the band's
           // height from the top, to fit it into empty space in the photo.

@@ -19,6 +19,7 @@ interface Props {
   hero?: {
     image: ImageMetadata;
     heading: string;
+    logo?: ImageMetadata;
     cta?: { label: string; href: string };
     tint?: boolean;
   };
@@ -115,7 +116,7 @@ const shareUrl = new URL(shareImage.src, Astro.site);
     </header>
 
     <main>
-      {hero && <Band image={hero.image} heading={hero.heading} cta={hero.cta} headingAt={hero.headingAt} focusX={hero.focusX} tint={hero.tint} level={1} />}
+      {hero && <Band image={hero.image} heading={hero.heading} logo={hero.logo} cta={hero.cta} headingAt={hero.headingAt} focusX={hero.focusX} tint={hero.tint} level={1} />}
       <slot />
     </main>
 

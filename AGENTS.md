@@ -124,8 +124,9 @@ at render time as an inline `text-align` style.
 `skitour.mdx` is the coming season; `skitour-YYYY.mdx` holds a past season.
 The SkiTour menu lists the coming season, labelled from the first
 `# SkiTour YYYY` heading of `skitour.mdx`, then the past seasons, newest
-first; both update automatically. Past season pages open with the poster,
-so they do not repeat the `moebius91.png` SkiTour banner.
+first; both update automatically. The coming season's hero shows the SkiTour logo
+(`hero.logo`, a white version of `moebius91.png`); past season pages open
+with the poster instead.
 The front page (`index.mdx`) repeats the coming season's event list in its
 "Moe SkiTour" column; when a new season is announced, update both files.
 A past season is split into subpages: `skitour-YYYY.mdx` holds the poster
