@@ -128,7 +128,9 @@ first; both update automatically. The coming season's hero shows the SkiTour log
 (`hero.logo`, a white version of `moebius91.png`); past season pages open
 with the poster instead.
 The front page (`index.mdx`) repeats the coming season's event list in its
-"Moe SkiTour" column; when a new season is announced, update both files.
+"Moe SkiTour" column, and the `description` of `skitour.mdx` (shown in link
+previews) names the dates and classes; when a new season is announced,
+update all of these.
 A past season is split into subpages: `skitour-YYYY.mdx` holds the poster
 and the season standings (`# YYYY Kokonaistulokset`), and each event is a
 subpage `skitour-YYYY/<venue>-<d>-<m>.mdx` (e.g. `talma-17-1.mdx`) with
