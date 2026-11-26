@@ -93,6 +93,10 @@ at render time as an inline `text-align` style.
 - Large source photos should be downsized before they go into `src/assets/`
   (about 1200 px on the long side is plenty for a column); Astro keeps the
   original pixel size, and a 12-megapixel image is slow to decode.
+- Page hero and footer photos are stored without the blue tint; the
+  stylesheet adds it (`.band-tint`, `.site-footer`), so do not bake it into
+  new images. `tint: false` under `hero` leaves a photo as it is. Mid-page
+  `<Band>`s are not tinted.
 - Images go in `src/assets/` and are referred to by file name in components
   (`<Gallery images={["a.jpg"]} />`) or by relative path in Markdown
   (`![](../../assets/a.jpg)`). Never link to `images.liquidblox.com`.

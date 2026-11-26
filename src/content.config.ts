@@ -40,6 +40,8 @@ const pages = defineCollection({
           // cropped. This is the point to keep in view, as a percentage of the
           // photo's width from the left; without it the middle is kept.
           focusX: z.number().min(0).max(100).optional(),
+          // false shows the photo without the blue tint.
+          tint: z.boolean().optional(),
         })
         .optional(),
     }),
