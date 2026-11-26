@@ -20,6 +20,7 @@ interface Props {
     image: ImageMetadata;
     heading: string;
     cta?: { label: string; href: string };
+    tint?: boolean;
   };
 }
 
@@ -68,7 +69,7 @@ const favicon = await getImage({ src: badge, width: 64, height: 64, format: 'png
 const touchIcon = await getImage({ src: badge, width: 180, height: 180, format: 'png' });
 // The footer is very tall on phones, where `cover` scales the photo up to
 // the footer's height, so it needs far more pixels than its desktop width.
-const footerBg = await getImage({ src: footerPhoto, width: 3600, format: 'webp' });
+const footerBg = await getImage({ src: footerPhoto, width: 3600, format: 'webp', quality: 45 });
 // Link previews (Facebook, Instagram, WhatsApp, ...) need absolute URLs.
 const shareImage = await getImage({ src: image ?? hero?.image ?? defaultShare, width: 1200, format: 'jpg' });
 const pageUrl = new URL(Astro.url.pathname, Astro.site);
@@ -114,7 +115,7 @@ const shareUrl = new URL(shareImage.src, Astro.site);
     </header>
 
     <main>
-      {hero && <Band image={hero.image} heading={hero.heading} cta={hero.cta} headingAt={hero.headingAt} focusX={hero.focusX} level={1} />}
+      {hero && <Band image={hero.image} heading={hero.heading} cta={hero.cta} headingAt={hero.headingAt} focusX={hero.focusX} tint={hero.tint} level={1} />}
       <slot />
     </main>
 
