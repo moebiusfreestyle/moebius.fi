@@ -113,6 +113,8 @@ main > *:not(.band):not(.gallery):not(.columns):not(.wide):not(.lightbox) { max-
 .band h1 { font-size:clamp(36px,8vw,100px); margin-bottom:32px; }
 .band h2 { font-size:clamp(32px,5vw,64px); }
 .band p { margin:0; }
+/* A logo in place of the heading text */
+.band-logo img { width:min(100%,640px); height:auto; vertical-align:top; filter:drop-shadow(0 1px 3px rgb(0 0 0 / 60%)) drop-shadow(0 0 16px rgb(0 0 0 / 55%)); }
 /* Blue tint over a page hero photo, so the white heading stays readable. An
    inset shadow is painted above the background image but below the text. */
 .band-tint { box-shadow:inset 0 0 0 100vmax rgb(0 96 160 / 50%); }
