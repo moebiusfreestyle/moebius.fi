@@ -5,7 +5,7 @@ Guidance for AI agents (and humans) working in this repository.
 ## What this is
 
 The website of **Freestyleseura Moebius ry**, a freestyle skiing club in the
-Helsinki region, published at https://www.moebius.fi. It replaces a hosted
+Helsinki region, published at https://moebius.fi (www redirects there). It replaces a hosted
 Liquidblox site with a plain static site: 15 pages in Finnish (plus one page
 each in English and Swedish), built with [Astro](https://astro.build) from
 Markdown (MDX) content. There is no backend or login; the club shop is an
@@ -167,7 +167,7 @@ move its events into subpages the same way.
 After any change, `make build` must succeed. Then check, as appropriate:
 
 - the page in `dist/` (or `make dev`) at desktop and phone widths; the live
-  site at www.moebius.fi is the reference design for layout questions;
+  site at moebius.fi is the reference design for layout questions;
 - no local links or image references in `dist/**/*.html` point at files that
   do not exist;
 - every `href="#..."` resolves to an element id on the same page (heading ids
