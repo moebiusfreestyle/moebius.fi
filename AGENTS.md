@@ -99,6 +99,8 @@ at render time as an inline `text-align` style.
 - A paragraph that starts with `1.`/`2.` must escape the dot (`1\.`), or
   Markdown turns it into a list.
 - Hard line breaks are a trailing backslash.
+- Every Markdown heading gets a `§` link to itself, shown on hover
+  (`src/lib/heading-anchors-plugin.mjs`); nothing to add in the content.
 - The URL of a page is its file name; renaming a file changes the URL, so add
   a redirect to `public/_redirects` if you do.
 - Subpages: `foo/bar.mdx` next to `foo.mdx` is served at `/foo/bar/`. The
