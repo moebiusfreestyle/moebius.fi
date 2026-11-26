@@ -7,6 +7,13 @@ h1,h2,h3 { font-family:"Montserrat",system-ui,sans-serif; color:var(--navy); lin
 h2 { font-size:28px; margin:48px 0 16px; }
 h3 { font-size:20px; }
 a { color:var(--blue); }
+/* "§" link after a heading (src/lib/heading-anchors-plugin.mjs), shown on hover
+   or keyboard focus. Absolute, so it takes no room and never moves the heading.
+   scroll-margin keeps a linked heading clear of the sticky header. */
+:is(h1,h2,h3,h4,h5,h6)[id] { scroll-margin-top:110px; }
+.anchor { position:absolute; padding-left:.3em; font-weight:400; text-decoration:none; opacity:0; }
+.anchor::before { content:"§"; }
+:is(h1,h2,h3,h4,h5,h6):hover > .anchor, .anchor:focus-visible { opacity:1; }
 img { max-width:100%; height:auto; }
 
 /* Header */
@@ -187,6 +194,7 @@ tr.podium td { background:#faf7e3; }
 @media (max-width:900px) {
   .site-header { flex-wrap:wrap; justify-content:space-between; gap:8px 16px; padding:10px 16px; }
   .logo img { height:44px; }
+  :is(h1,h2,h3,h4,h5,h6)[id] { scroll-margin-top:80px; }
   .site-nav { flex-basis:100%; }
   .site-nav .nav-level-1 { display:grid; grid-template-columns:1fr 1fr; gap:0 12px; text-align:center; }
   .site-nav .has-sub > a::after, .site-nav .nav-list .nav-list { display:none !important; }
